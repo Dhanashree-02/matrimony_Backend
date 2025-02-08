@@ -1,19 +1,28 @@
-const express = require('express');
-const { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent } = require('../controllers/eventController');
-const upload = require('../middlewares/fileUploader'); 
+const express = require("express");
+const {
+  createEvent,
+  getEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent,
+} = require("../controllers/eventController");
+const upload = require("../middlewares/fileUploader"); // Import multer configuration
 
 const eventRouter = express.Router();
 
-// Event routes
-
+// Create Event (with image upload)
 eventRouter.post("/create", upload.array("imageUrls", 15), createEvent);
 
-// eventRouter.post("/create", upload.array("images", 5), eventController.createEvent); // Allow up to 5 images
+// Get All Events
+eventRouter.get("/", getEvents);
 
+// Get Event by ID
+eventRouter.get("/:id", getEventById);
 
-// eventRouter.get('/', getAllEvents);
-// eventRouter.get('/:id', getEventById);
-// eventRouter.put('/:id', upload.single('image'), updateEvent);
-eventRouter.delete('/:id', deleteEvent);
+// Update Event (with image upload)
+eventRouter.put("/:id", upload.array("imageUrls", 15), updateEvent);
+
+// Delete Event
+eventRouter.delete("/:id", deleteEvent);
 
 module.exports = eventRouter;
